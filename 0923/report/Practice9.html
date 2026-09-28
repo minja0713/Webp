@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>text-shadow와 box-shadowt</title>
+    <style>
+        h1 {
+            text-align: center;
+            color:yellow;
+            text-shadow: 2px 2px 2px black, 2px 2px 10px darkblue, 0 0 5px blue;
+        }
+        img {
+            width: 150px;
+            height: 100px;
+        }
+        img:hover {
+            box-shadow: 2px 2px 2px black, 0 0 10px blue, 0 0 5px darkblue;
+        }
+    </style>
+</head>
+<body>
+    <h1>Most Visited Pages</h1>
+    <hr>
+    <div class="Image">
+        <a href="https://www.naver.com"><img src="09.naver.jpg"></a>
+        <a href="https://www.google.com"><img src="09.google.png"></a>
+        <a href="https://www.amazon.com"><img src="09.amazon.jpeg"></a>
+    </div>
+</body>
+</html>
