@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>book 객체 배열 만들기</title>
+</head>
+<body>
+    <h3>book 객체 배열 만들기</h3>
+    <hr>
+    <div id="0"></div>
+    <div id="1"></div>
+    <div id="2"></div>
+    <div id="3"></div>
+    <div id="4"></div>
+    <hr>
+    <p>가장 가격이 비싼 책은 <span id="expensive"></span></p>
+    <script>
+        let list = [];
+
+        for(let i=0; i<5; i++){
+            let input = prompt("콤마(,)로 분리하면서 책제목 저자 가격 순으로 입력");
+            let bookArray = input.split(',')
+
+            let book = new Object();
+                book.title = bookArray[0];
+                book.name = bookArray[1];
+                book.price = bookArray[2];
+
+            list.push(book);
+        }
+
+        for(let i=0; i<5; i++){
+            document.getElementById(i).textContent = list[i].title + ", " + list[i].name + ", " + list[i].price 
+        }
+
+        let most_title = 0;
+        let most_price = 0;
+
+        for(let i=0; i<list.length; i++){
+            if (most_price < parseInt(list[i].price)) {
+                most_price = list[i].price;
+                most_title = list[i].title;
+            }
+        }
+        document.getElementById("expensive").textContent = most_title;
+    </script>
+</body>
+</html>
+
+
+// HTML5, 황기태, 20000
+// CSS3, 이재문, 50000
+// JAVA, 한원선, 30000
+// 스폰지밥, Grace, 60000
+// C++, Kitae, 25000
