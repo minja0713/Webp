@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>z-index 스타일 프로퍼티</title>
+    <style>
+        div {
+            position: absolute;
+        }
+
+        img {
+            position: absolute;
+        }
+    </style>
+</head>
+
+<body>
+    <h3>z-index 스타일 프로퍼티</h3>
+    <hr>
+    <div>
+        <img src="spade-A.png" width="200" height="280" alt="스페이드A">
+        <img src="spade-2.png" width="200" height="280" alt="스페이드2">
+        <img src="spade-3.png" width="200" height="280" alt="스페이드3">
+        <img src="spade-7.png" width="200" height="280" alt="스페이드7">
+    </div>
+    <script>
+        let img = document.getElementsByTagName("img");
+        let index = 0;
+        
+        for (let i=0; i<img.length; i++) {
+            img[i].style.zIndex = i;
+            img[i].style.left = "20px";
+            img[i].style.top = "20px";
+            img[i].onclick = Shuffle;
+        }
+
+        function Shuffle() {
+            index--;
+            this.style.zIndex = index;
+        }
+    </script>
+</body>
+</html>p
