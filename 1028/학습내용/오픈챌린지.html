@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>겜블링 게임</title>
+    <style>
+        div {
+            display: inline-block;
+            border: 1px solid violet;
+            background-color: pink;
+        }
+        span {
+            display: inline-block;
+            width: 60px;
+            text-align: center;
+            font-size: 50px;
+            color: blue;
+            font-weight: bold;
+            font-style: italic;
+        }
+        #result {
+            color: pink;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <h3>겜블링 게임</h3>
+    <p>각 숫자를 클릭하면 0에서 2사이의 난수로 바뀝니다. 모두 같은 수가 나오면 승리합니다.</p>
+    <hr>
+    <div>
+        <span id="first" onclick="roll(0)">0</span>
+        <span id="second" onclick="roll(1)">0</span>
+        <span id="third" onclick="roll(2)">0</span>
+    </div>
+
+    <p id="result" onclick="reset()"></p>
+    <script>
+        let nums = [0, 0, 0];
+        let clicked = [false, false, false];
+
+        function roll(i) {
+            if(clicked[i]) return;
+
+            nums[i] = Math.floor(Math.random() * 3);
+            clicked[i] = true;
+            document.getElementById("first").innerHTML = nums[0];
+            document.getElementById("second").innerHTML = nums[1];
+            document.getElementById("third").innerHTML = nums[2];
+
+            if (clicked[0] && clicked[1] && clicked[2]) {
+                if(nums[0] === nums[1] && nums[1] === nums[2]) {
+                    document.getElementById("result").innerHTML = "Success(click here to do again)";
+                } else {
+                    document.getElementById("result").innerHTML = "fail(click here to do again)";
+                }
+            }
+        }
+
+        function reset() {
+            nums = [0, 0, 0];
+            clicked = [false, false, false];
+            document.getElementById("first").innerHTML = nums[0];
+            document.getElementById("second").innerHTML = nums[1];
+            document.getElementById("third").innerHTML = nums[2];
+            document.getElementById("result").innerHTML = "";
+        }
+    </script>
+
+</body>
+</html>
