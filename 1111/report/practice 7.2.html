@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>산수를 풀어 봅시다</title>
+    <style>
+        .q {
+            display: inline-block;
+            width: 70px;
+        }
+
+        .wrong {
+            text-decoration: line-through;
+        }
+    </style>
+    <script>
+        let answers = [];
+        let ops = ["+", "-", "*", "/"];
+
+        function randomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function makeQuiz() {
+            answers = [];
+            for (let i = 0; i < 4; i++) {
+                let a = randomInt(1, 20);
+                let b = randomInt(1, 20);
+                let op = ops[randomInt(0, 3)];
+                let ans;
+
+                if (op == "+") ans = a + b;
+                else if (op == "-") ans = a - b;
+                else if (op == "*") ans = a * b;
+                else ans = Math.floor(a / b);
+
+                answers[i] = ans;
+                let q = document.getElementById("q" + i);
+                q.innerHTML = a + op + b;
+                q.className = "q";
+                document.getElementById("a" + i).value = "";
+            }
+            document.getElementById("result").innerHTML = 0;
+        }
+
+        function grade() {
+            let count = 0;
+            for (let i = 0; i < answers.length; i++) {
+                let q = document.getElementById("q" + i);
+                let input = document.getElementById("a" + i).value;
+
+                if (input !== "" && Number(input) === answers[i]) {
+                    q.className = "q";
+                    count++;
+                } else {
+                    q.className = "q wrong";
+                }
+            }
+            document.getElementById("result").innerHTML = count;
+        }
+
+        window.onload = makeQuiz;
+    </script>
+</head>
+
+<body>
+    <h3>산수 문제를 풀어 봅시다.</h3>
+    <p>자동으로 문제가 만들어집니다. 답 입력 후 채점 버튼을 누르세요.
+        다시 버튼을 누르면 새로운 문제가 출력됩니다. 나누기 결과는 정수입니다.</p>
+    <hr>
+    <div><span class="q" id="q0"></span><input type="text" id="a0"></div>
+    <div><span class="q" id="q1"></span><input type="text" id="a1"></div>
+    <div><span class="q" id="q2"></span><input type="text" id="a2"></div>
+    <div><span class="q" id="q3"></span><input type="text" id="a3"></div>
+    <button onclick="grade()">채점</button>
+    <span id="result">0</span>
+    <button onclick="makeQuiz()">다시</button>
+</body>
+
+</html>

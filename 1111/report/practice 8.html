@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>산수를 풀어 봅시다</title>
+    <style>
+        .q {
+            display: inline-block;
+            width: 70px;
+        }
+
+        .wrong {
+            text-decoration: line-through;
+        }
+    </style>
+    <script>
+        let answers = [];
+        let ops = ["+", "-", "*", "/"];
+        let timerID = null;
+        let remain = 10;                       // 남은 시간(초)
+
+        function randomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function makeQuiz() {
+            answers = [];
+            for (let i = 0; i < 4; i++) {
+                let a = randomInt(1, 20);
+                let b = randomInt(1, 20);
+                let op = ops[randomInt(0, 3)];
+                let ans;
+
+                if (op == "+") ans = a + b;
+                else if (op == "-") ans = a - b;
+                else if (op == "*") ans = a * b;
+                else ans = Math.floor(a / b);
+
+                answers[i] = ans;
+                let q = document.getElementById("q" + i);
+                q.innerHTML = a + op + b;
+                q.className = "q";
+                document.getElementById("a" + i).value = "";
+            }
+            document.getElementById("result").innerHTML = 0;
+            startTimer();
+        }
+
+        function startTimer() {
+            clearInterval(timerID); 
+            remain = 10;
+            document.getElementById("time").innerHTML = remain;
+            timerID = setInterval(tick, 1000);
+        }
+
+        function tick() {
+            remain--;
+            document.getElementById("time").innerHTML = remain;
+            if (remain <= 0) {
+                clearInterval(timerID);
+                grade();
+            }
+        }
+
+        function grade() {
+            let count = 0;
+            for (let i = 0; i < answers.length; i++) {
+                let q = document.getElementById("q" + i);
+                let input = document.getElementById("a" + i).value;
+
+                if (input !== "" && Number(input) === answers[i]) {
+                    q.className = "q";
+                    count++;
+                } else {
+                    q.className = "q wrong";
+                }
+            }
+            document.getElementById("result").innerHTML = count;
+        }
+
+        window.onload = makeQuiz;
+    </script>
+</head>
+
+<body>
+    <h3>산수 문제를 풀어 봅시다.</h3>
+    <p>문제는 자동으로 생성되며, 10초가 지나면 자동 채점됩니다.<br>
+        남은 시간 <span id="time">10</span></p>
+    <hr>
+    <div><span class="q" id="q0"></span><input type="text" id="a0"></div>
+    <div><span class="q" id="q1"></span><input type="text" id="a1"></div>
+    <div><span class="q" id="q2"></span><input type="text" id="a2"></div>
+    <div><span class="q" id="q3"></span><input type="text" id="a3"></div>
+    <button onclick="makeQuiz()">다시</button>
+    <span id="result">0</span>
+</body>
+
+</html>

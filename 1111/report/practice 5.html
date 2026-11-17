@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>setTimeout()/clearTimeout()</title>
+    <style>
+        div {
+            border: 1px solid gray;
+            background-color: aliceblue;
+            padding: 5px;
+            width: 110px;
+        }
+    </style>
+    <script>
+        let timerID = null;
+        function clock() {
+            let date = new Date();
+            let h = date.getHours();
+            let day = (h >= 12) ? "오후" : "오전";
+            h = h % 12;
+            if (h == 0) h = 12; 
+
+            document.getElementById("div").innerHTML =
+                day + " " + h + ":" + date.getMinutes() + ":" + date.getSeconds();
+
+            clearTimeout(timerID);
+            timerID = setTimeout("clock()", 1000);
+        }
+        window.onload = function () {
+            clock();
+        }
+    </script>
+</head>
+
+<body>
+    <h3>div 태그에 시계 만들기</h3>
+    <hr>
+    <div id="div"></div>
+</body>
+
+</html>
