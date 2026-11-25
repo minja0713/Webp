@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>분실물 등록</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f4f6f8;
+      color: #202124;
+      font-family: Arial, "Noto Sans KR", sans-serif;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 520px;
+      padding: 30px;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 26px;
+      text-align: center;
+    }
+
+    .intro {
+      margin: 0 0 22px;
+      color: #5f6368;
+      font-size: 14px;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      margin: 15px 0 7px;
+      font-weight: 600;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #cbd0d6;
+      border-radius: 6px;
+      background: #fff;
+      color: inherit;
+      font: inherit;
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: 2px solid #9bbcf5;
+      border-color: #4285f4;
+    }
+
+    .hint {
+      margin: 6px 0 0;
+      color: #6b7280;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 22px;
+      padding: 13px;
+      border: 0;
+      border-radius: 6px;
+      background: #1a73e8;
+      color: #fff;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      background: #9aa0a6;
+      cursor: wait;
+    }
+
+    .error {
+      margin: 14px 0 0;
+      color: #b3261e;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .success {
+      padding: 26px 0;
+      text-align: center;
+    }
+
+    .success h2 {
+      margin: 0 0 10px;
+      font-size: 23px;
+    }
+
+    .success p {
+      margin: 0;
+      color: #5f6368;
+      line-height: 1.6;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="card">
+    <section id="formSection">
+      <h1>분실물 등록</h1>
+      <p class="intro">분실했거나 습득한 물품의 정보를 입력해 주세요.</p>
+
+      <form id="lostFoundForm">
+        <label for="type">등록 유형</label>
+        <select id="type" name="type" required>
+          <option value="">선택해 주세요</option>
+          <option value="분실물">분실물 찾기</option>
+          <option value="습득물">습득물 등록</option>
+        </select>
+
+        <label for="itemName">물품명</label>
+        <input id="itemName" name="itemName" type="text" maxlength="100"
+               placeholder="예: 검은색 우산" required>
+
+        <label for="category">분류</label>
+        <select id="category" name="category" required>
+          <option value="">선택해 주세요</option>
+          <option value="전자기기">전자기기</option>
+          <option value="의류·가방">의류·가방</option>
+          <option value="지갑·카드">지갑·카드</option>
+          <option value="열쇠·소지품">열쇠·소지품</option>
+          <option value="책·문구">책·문구</option>
+          <option value="기타">기타</option>
+        </select>
+
+        <label for="place">분실·습득 장소</label>
+        <input id="place" name="place" type="text" maxlength="200"
+               placeholder="예: 2층 회의실 앞" required>
+
+        <label for="eventDate">분실·습득 날짜</label>
+        <input id="eventDate" name="eventDate" type="date" required>
+
+        <label for="description">상세 설명</label>
+        <textarea id="description" name="description" maxlength="1000"
+                  placeholder="색상, 특징 등 물품을 확인하는 데 필요한 내용을 적어 주세요."
+                  required></textarea>
+
+        <label for="contact">연락 방법 (선택)</label>
+        <input id="contact" name="contact" type="text" maxlength="200"
+               placeholder="예: 이메일 또는 연락 가능한 방법">
+        <p class="hint">연락 방법은 스프레드시트에 저장됩니다. 공유 범위에 유의해 주세요.</p>
+
+        <button id="submitButton" type="submit">등록하기</button>
+        <p id="errorMessage" class="error" role="alert" hidden></p>
+      </form>
+    </section>
+
+    <section id="successSection" class="success" hidden>
+      <h2>등록이 완료됐어요!</h2>
+      <p>입력한 분실물 정보가 저장되었습니다.</p>
+    </section>
+  </main>
+
+  <script>
+    const form = document.getElementById('lostFoundForm');
+    const formSection = document.getElementById('formSection');
+    const successSection = document.getElementById('successSection');
+    const submitButton = document.getElementById('submitButton');
+    const errorMessage = document.getElementById('errorMessage');
+
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      errorMessage.hidden = true;
+      submitButton.disabled = true;
+      submitButton.textContent = '등록 중...';
+
+      const data = {
+        type: document.getElementById('type').value,
+        itemName: document.getElementById('itemName').value,
+        category: document.getElementById('category').value,
+        place: document.getElementById('place').value,
+        eventDate: document.getElementById('eventDate').value,
+        description: document.getElementById('description').value,
+        contact: document.getElementById('contact').value
+      };
+
+      google.script.run
+        .withSuccessHandler(function () {
+          formSection.hidden = true;
+          successSection.hidden = false;
+        })
+        .withFailureHandler(function (error) {
+          errorMessage.textContent = error.message || '저장 중 오류가 발생했습니다.';
+          errorMessage.hidden = false;
+          submitButton.disabled = false;
+          submitButton.textContent = '등록하기';
+        })
+        .submitLostFound(data);
+    });
+  </script>
+</body>
+</html>
