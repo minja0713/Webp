@@ -1,0 +1,5 @@
+function doGet() {
+  return HtmlService.createHtmlOutputFromFile('index')
+    .setTitle('PORTFOLIO | 운영체제 · 지능형 시스템')
+    .addMetaTag('viewport', 'width=device-width, initial-scale=1');
+}
