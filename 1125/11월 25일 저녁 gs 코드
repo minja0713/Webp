@@ -1,0 +1,66 @@
+const SPREADSHEET_ID = '여기에_구글_스프레드시트_ID를_입력하세요';
+const SHEET_NAME = '신청내역';
+const HEADERS = ['이름', '음식', '하고싶은 말'];
+
+function doGet() {
+  return HtmlService.createHtmlOutputFromFile('index')
+    .setTitle('11월 25일 저녁 신청 받기')
+    .addMetaTag('viewport', 'width=device-width, initial-scale=1');
+}
+
+function submitForm(data) {
+  if (!data) {
+    throw new Error('입력 내용을 확인해 주세요.');
+  }
+
+  const name = cleanValue_(data.name, '이름', 100);
+  const food = cleanValue_(data.food, '음식', 200);
+  const message = cleanValue_(data.message, '하고싶은 말', 1000);
+
+  const spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
+  let sheet = spreadsheet.getSheetByName(SHEET_NAME);
+
+  if (!sheet) {
+    sheet = spreadsheet.insertSheet(SHEET_NAME);
+  }
+
+  // 시트가 비어 있으면 헤더를 생성하고, 기존 헤더가 다르면 오류를 표시합니다.
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow(HEADERS);
+  } else {
+    const existingHeaders = sheet
+      .getRange(1, 1, 1, HEADERS.length)
+      .getDisplayValues()[0];
+
+    if (HEADERS.some((header, index) => existingHeaders[index] !== header)) {
+      throw new Error('스프레드시트 첫 행의 헤더를 확인해 주세요: 이름, 음식, 하고싶은 말');
+    }
+  }
+
+  sheet.appendRow([
+    protectFormula_(name),
+    protectFormula_(food),
+    protectFormula_(message)
+  ]);
+
+  return { success: true };
+}
+
+function cleanValue_(value, fieldName, maxLength) {
+  const text = String(value || '').trim();
+
+  if (!text) {
+    throw new Error(fieldName + ' 항목을 입력해 주세요.');
+  }
+
+  if (text.length > maxLength) {
+    throw new Error(fieldName + ' 항목은 ' + maxLength + '자 이하로 입력해 주세요.');
+  }
+
+  return text;
+}
+
+// 입력값이 스프레드시트 수식으로 해석되지 않도록 처리합니다.
+function protectFormula_(value) {
+  return /^[=+\-@]/.test(value) ? "'" + value : value;
+}
