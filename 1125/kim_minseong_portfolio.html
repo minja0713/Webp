@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10131b">
+  <title>김민성 | 포트폴리오</title>
+  <style>
+    :root {
+      --bg: #10131b;
+      --surface: #191e29;
+      --surface-hover: #202735;
+      --text: #f2f4f8;
+      --muted: #adb5c6;
+      --accent: #c6f36b;
+      --line: #303747;
+      --max-width: 1120px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 100px; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Pretendard, "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      line-height: 1.7;
+      word-break: keep-all;
+      overflow-wrap: anywhere;
+    }
+    a { color: inherit; text-decoration: none; }
+    a:focus-visible { outline: 3px solid var(--accent); outline-offset: 5px; }
+    ::selection { color: var(--bg); background: var(--accent); }
+    .container { width: min(var(--max-width), calc(100% - 48px)); margin-inline: auto; }
+    .skip-link {
+      position: fixed; top: -100px; left: 16px; z-index: 100;
+      padding: 12px 18px; background: var(--accent); color: var(--bg);
+    }
+    .skip-link:focus { top: 12px; }
+    .site-header {
+      position: sticky; top: 0; z-index: 20;
+      background: rgba(16, 19, 27, .95); border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(14px);
+    }
+    .header-inner {
+      min-height: 80px; display: flex; align-items: center;
+      justify-content: space-between; gap: 24px;
+    }
+    .logo { font-size: 18px; font-weight: 900; letter-spacing: -.5px; white-space: nowrap; }
+    .logo span { color: var(--accent); }
+    .nav { display: flex; gap: 26px; flex-wrap: wrap; }
+    .nav a { color: var(--muted); font-size: 14px; transition: color .2s; }
+    .nav a:hover { color: var(--accent); }
+    .hero { padding: 100px 0 76px; }
+    .hero-grid {
+      display: grid; grid-template-columns: 1.4fr .8fr;
+      align-items: center; gap: 72px;
+    }
+    .eyebrow {
+      margin: 0 0 22px; color: var(--accent); font-size: 12px;
+      font-weight: 800; letter-spacing: 2.5px;
+    }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 {
+      margin-bottom: 24px; font-size: clamp(36px, 4.7vw, 62px);
+      line-height: 1.2; letter-spacing: -2.5px;
+    }
+    h1 .accent { color: var(--accent); }
+    .hero-description {
+      max-width: 550px; margin-bottom: 28px; color: var(--muted);
+      font-size: 17px; line-height: 1.9;
+    }
+    .hero-description strong { color: var(--text); }
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag {
+      padding: 6px 11px; border: 1px solid var(--line);
+      color: var(--muted); font-size: 12px;
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+    .button {
+      display: inline-flex; justify-content: center; align-items: center;
+      min-height: 48px; padding: 12px 22px; border: 1px solid var(--line);
+      background: transparent; color: var(--text); font-size: 14px;
+      font-weight: 700; cursor: pointer; transition: background .2s, transform .2s;
+    }
+    .button:hover { background: var(--surface-hover); transform: translateY(-2px); }
+    .button-primary { color: var(--bg); background: var(--accent); border-color: var(--accent); }
+    .button-primary:hover { background: #d8ff8e; }
+    .portrait { width: min(100%, 420px); margin: 0; justify-self: end; }
+    .photo-placeholder {
+      display: grid; place-items: center; width: 100%; aspect-ratio: 1;
+      background: #fff; border: 1px solid #e5e7eb; color: #777;
+      font-size: 13px; letter-spacing: 1px;
+    }
+    .portrait figcaption {
+      display: flex; justify-content: space-between; gap: 12px;
+      padding-top: 16px; color: var(--muted); font-size: 11px; letter-spacing: 1px;
+    }
+    .specialty-strip {
+      display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 68px;
+      border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+    }
+    .strip-item { padding: 24px; border-right: 1px solid var(--line); }
+    .strip-item:first-child { padding-left: 0; }
+    .strip-item:last-child { border-right: 0; }
+    .strip-item small {
+      display: block; margin-bottom: 7px; color: var(--muted);
+      font-size: 10px; letter-spacing: 2px;
+    }
+    .strip-item strong { font-size: 16px; font-weight: 600; }
+    .section { padding: 76px 0; border-bottom: 1px solid var(--line); }
+    .section-heading { display: flex; align-items: baseline; gap: 16px; margin-bottom: 30px; }
+    .section-number { color: var(--accent); font: 12px monospace; }
+    h2 { margin-bottom: 0; font-size: clamp(26px, 3vw, 36px); line-height: 1.3; letter-spacing: -1px; }
+    .section-description { margin: -12px 0 30px; color: var(--muted); font-size: 14px; }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+    .about-lead { margin-bottom: 0; font-size: 24px; line-height: 1.65; letter-spacing: -.7px; }
+    .about-copy { margin-bottom: 0; color: var(--muted); }
+    .about-copy strong { color: var(--text); }
+    .two-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .three-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .card { padding: 30px; background: var(--surface); border: 1px solid var(--line); transition: border-color .2s; }
+    .card:hover { border-color: #708148; }
+    .card-code { margin-bottom: 32px; color: var(--accent); font: 13px monospace; }
+    .card h3 { margin-bottom: 7px; font-size: 23px; letter-spacing: -.7px; }
+    .card .english { margin-bottom: 20px; color: var(--accent); font-size: 12px; letter-spacing: .5px; }
+    .card p { color: var(--muted); font-size: 14px; }
+    .card .tags { margin-top: 24px; }
+    .project-status {
+      display: inline-block; margin-bottom: 24px; padding: 4px 9px;
+      border: 1px solid var(--line); color: var(--accent); font-size: 11px;
+    }
+    .project-card h3 { font-size: 20px; }
+    .project-card p:last-child, .hobby-card p:last-child { margin-bottom: 0; }
+    .hobby-symbol {
+      display: flex; align-items: center; justify-content: center;
+      width: 48px; height: 48px; margin-bottom: 24px; background: var(--bg);
+      border: 1px solid var(--line); color: var(--accent);
+      font: 700 15px monospace;
+    }
+    .hobby-card h3 { font-size: 21px; }
+    .contact-panel {
+      display: flex; align-items: center; justify-content: space-between; gap: 32px;
+      padding: 40px; background: var(--surface); border: 1px solid var(--line);
+    }
+    .contact-panel h3 { margin-bottom: 12px; font-size: 27px; letter-spacing: -1px; }
+    .contact-panel p { margin-bottom: 0; color: var(--muted); }
+    .contact-actions { display: flex; flex-wrap: wrap; gap: 10px; flex-shrink: 0; }
+    .contact-note { margin: 14px 0 0; color: var(--muted); font-size: 13px; }
+    .footer {
+      display: flex; justify-content: space-between; gap: 20px;
+      padding-block: 30px; color: var(--muted); font-size: 12px;
+    }
+    @media (max-width: 900px) {
+      .hero-grid { gap: 36px; grid-template-columns: 1.25fr .75fr; }
+      .three-grid { grid-template-columns: 1fr; }
+      .contact-panel { align-items: flex-start; flex-direction: column; }
+    }
+    @media (max-width: 640px) {
+      .container { width: calc(100% - 36px); }
+      .header-inner { padding-block: 15px; flex-direction: column; align-items: flex-start; gap: 12px; }
+      .nav { width: 100%; justify-content: space-between; gap: 8px; }
+      .nav a { font-size: 12px; }
+      html { scroll-padding-top: 125px; }
+      .hero { padding: 56px 0 36px; }
+      .hero-grid, .about-grid, .two-grid { grid-template-columns: 1fr; }
+      .hero-grid { gap: 42px; }
+      .portrait { width: min(100%, 320px); justify-self: start; }
+      h1 { letter-spacing: -1.7px; }
+      .hero-description { font-size: 15px; }
+      .specialty-strip { margin-top: 42px; grid-template-columns: 1fr; }
+      .strip-item, .strip-item:first-child {
+        padding: 17px 0; border-right: 0; border-bottom: 1px solid var(--line);
+      }
+      .strip-item:last-child { border-bottom: 0; }
+      .section { padding: 50px 0; }
+      .about-grid { gap: 22px; }
+      .about-lead { font-size: 22px; }
+      .card, .contact-panel { padding: 25px; }
+      .footer { flex-direction: column; gap: 6px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">본문 바로가기</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="#home" aria-label="포트폴리오 첫 화면">MINSEONG<span>.</span></a>
+      <nav class="nav" aria-label="주요 메뉴">
+        <a href="#about">소개</a>
+        <a href="#expertise">전공</a>
+        <a href="#projects">연습 기록</a>
+        <a href="#interests">관심사</a>
+        <a href="#contact">연락</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section id="home" class="hero">
+      <div class="container">
+        <div class="hero-grid">
+          <div>
+            <p class="eyebrow">LEARN · BUILD · KEEP GOING</p>
+            <h1>
+              쉽게 포기하지 않고<br>
+              <span class="accent">끝까지 해내는</span><br>
+              김민성입니다.
+            </h1>
+            <p class="hero-description">
+              안녕하세요, <strong>김민성</strong>입니다.<br>
+              처음부터 완벽하지 않아도 괜찮다고 생각합니다.
+              하나씩 배우고 부딪히며, 맡은 일은 끝까지 해내는 사람이 되고 싶습니다.
+            </p>
+            <div class="tags" aria-label="관심 분야">
+              <span class="tag">운영체제</span>
+              <span class="tag">지능형 시스템</span>
+              <span class="tag">꾸준한 학습</span>
+            </div>
+            <div class="hero-actions">
+              <a class="button button-primary" href="#projects">연습 기록 보기 ↗</a>
+              <a class="button" href="#contact">연락하기</a>
+            </div>
+          </div>
+
+          <figure class="portrait">
+            <div class="photo-placeholder" role="img" aria-label="프로필 사진을 넣을 공간">
+              PROFILE PHOTO
+            </div>
+            <figcaption>
+              <span>PROFILE / PHOTO</span>
+              <span>사진 준비 중</span>
+            </figcaption>
+          </figure>
+        </div>
+
+        <div class="specialty-strip">
+          <div class="strip-item"><small>MAJOR 01</small><strong>운영체제</strong></div>
+          <div class="strip-item"><small>MAJOR 02</small><strong>지능형 시스템</strong></div>
+          <div class="strip-item"><small>BEYOND THE CODE</small><strong>축구 · 포켓몬</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="section">
+      <div class="container">
+        <div class="section-heading"><span class="section-number">01 /</span><h2>저를 소개합니다</h2></div>
+        <div class="about-grid">
+          <p class="about-lead">
+            시작은 서툴러도 괜찮습니다.<br>
+            포기하지 않고 한 걸음씩,<br>
+            끝까지 답을 찾아갑니다.
+          </p>
+          <p class="about-copy">
+            <strong>운영체제와 지능형 시스템</strong>을 공부하며 컴퓨터가 동작하는 원리와
+            문제를 해결하는 방법을 배우고 있습니다.<br><br>
+            지금은 배운 내용을 직접 적용해 보는 연습을 이어가는 중입니다.
+            작은 결과라도 꾸준히 만들고 기록하며, 어제보다 나아지는 개발자로 성장하겠습니다.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="expertise" class="section">
+      <div class="container">
+        <div class="section-heading"><span class="section-number">02 /</span><h2>관심 전공 분야</h2></div>
+        <p class="section-description">현재 배우고 있으며, 앞으로 차근차근 깊이를 더해갈 분야입니다.</p>
+        <div class="two-grid">
+          <article class="card">
+            <div class="card-code">01 — SYSTEM FOUNDATION</div>
+            <h3>운영체제</h3>
+            <p class="english">OPERATING SYSTEMS</p>
+            <p>프로세스와 메모리, 자원 관리 등 컴퓨터 시스템이 동작하는 원리를 배우고 있습니다. 이해한 내용을 작은 예제와 기록으로 정리해 나갈 예정입니다.</p>
+            <div class="tags" aria-label="관심 키워드">
+              <span class="tag">프로세스 · 스레드</span><span class="tag">메모리 관리</span>
+              <span class="tag">동기화</span><span class="tag">스케줄링</span>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-code">02 — INTELLIGENT THINKING</div>
+            <h3>지능형 시스템</h3>
+            <p class="english">INTELLIGENT SYSTEMS</p>
+            <p>데이터와 알고리즘을 활용해 문제를 해결하는 방법에 관심이 있습니다. 기초부터 차근차근 학습하고, 직접 실습한 내용을 정리해 나가고 있습니다.</p>
+            <div class="tags" aria-label="관심 키워드">
+              <span class="tag">머신러닝</span><span class="tag">데이터 분석</span>
+              <span class="tag">추론</span><span class="tag">의사결정</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="section">
+      <div class="container">
+        <div class="section-heading"><span class="section-number">03 /</span><h2>연습 & 학습 기록</h2></div>
+        <p class="section-description">아직 연습하고 배우는 단계입니다. 진행한 내용을 솔직하게 기록합니다.</p>
+        <div class="three-grid">
+          <article class="card project-card">
+            <span class="project-status">연습 중</span>
+            <h3>개인 포트폴리오 웹페이지</h3>
+            <p>HTML과 CSS를 활용해 첫 포트폴리오 페이지를 만드는 중입니다. 화면 구성, 반응형 레이아웃, 메뉴 이동과 연락처 연결을 직접 적용하며 웹페이지 제작의 기초를 익히고 있습니다.</p>
+          </article>
+          <article class="card project-card">
+            <span class="project-status">학습 중</span>
+            <h3>운영체제 공부</h3>
+            <p>운영체제의 기본 개념을 배우고 있습니다. 앞으로 공부한 내용과 예제, 이해가 어려웠던 부분을 정리해 학습 기록으로 쌓아갈 예정입니다.</p>
+          </article>
+          <article class="card project-card">
+            <span class="project-status">학습 중</span>
+            <h3>지능형 시스템 공부</h3>
+            <p>지능형 시스템과 관련된 기초 내용을 익히는 중입니다. 학습과 실습을 이어가며 직접 해 본 내용과 배운 점을 차근차근 추가하겠습니다.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="interests" class="section">
+      <div class="container">
+        <div class="section-heading"><span class="section-number">04 /</span><h2>코드 밖의 관심사</h2></div>
+        <p class="section-description">공부와 함께 즐기는 관심사입니다.</p>
+        <div class="two-grid">
+          <article class="card hobby-card"><div class="hobby-symbol" aria-hidden="true">01</div><h3>축구</h3><p>경기를 보고 축구 이야기를 나누는 것을 좋아합니다.</p></article>
+          <article class="card hobby-card"><div class="hobby-symbol" aria-hidden="true">02</div><h3>포켓몬</h3><p>포켓몬과 관련된 게임과 콘텐츠에 관심이 있습니다.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section">
+      <div class="container">
+        <div class="section-heading"><span class="section-number">05 /</span><h2>함께 이야기해요</h2></div>
+        <div class="contact-panel">
+          <div>
+            <h3>배우고 도전하는 과정에 열려 있습니다.</h3>
+            <p>전공이나 웹페이지 제작 연습, 공통 관심사에 관한 이야기는 언제든 환영합니다.</p>
+          </div>
+          <div class="contact-actions">
+            <a class="button button-primary" href="mailto:123@123.com">이메일 보내기 ↗</a>
+          </div>
+        </div>
+        <p class="contact-note">이메일은 현재 예시 주소(123@123.com)입니다. 실제 주소를 사용할 때 교체해 주세요.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="container footer">
+    <span>© <span id="year"></span> 김민성.</span>
+    <span>Operating Systems × Intelligent Systems</span>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent =
+      new Intl.DateTimeFormat('en', { year: 'numeric', timeZone: 'Asia/Seoul' }).format(new Date());
+
+    document.querySelectorAll('a[href^="#"]').forEach((link) => {
+      link.addEventListener('click', (event) => {
+        const target = document.querySelector(link.getAttribute('href'));
+        if (!target) return;
+        event.preventDefault();
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        target.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' });
+        target.setAttribute('tabindex', '-1');
+        target.focus({ preventScroll: true });
+      });
+    });
+  </script>
+</body>
+</html>
