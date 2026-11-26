@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>오류노트 — 내 코드 실수를 자산으로</title>
+<style>
+:root{--ink:#202536;--muted:#7b8192;--line:#e8eaf0;--paper:#f7f8fb;--white:#fff;--purple:#6857e8;--purple2:#eeeaff;--green:#268c68;--red:#d95e5e;--amber:#bd7b23;--shadow:0 10px 30px rgba(38,42,64,.06)}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",sans-serif;font-size:14px}
+button,input,textarea,select{font:inherit}button{cursor:pointer}
+.app{max-width:1440px;min-height:100vh;margin:auto;display:grid;grid-template-columns:250px minmax(0,1fr)}
+.sidebar{background:#fff;border-right:1px solid var(--line);padding:27px 17px;display:flex;flex-direction:column;gap:28px}
+.brand{display:flex;align-items:center;gap:11px;padding:0 10px}.brandmark{width:38px;height:38px;border-radius:12px;background:var(--purple);color:#fff;display:grid;place-items:center;font-size:20px;font-weight:800;box-shadow:0 5px 12px #6857e833}.brandname{font-weight:800;font-size:17px;letter-spacing:-.4px}.brandname small{display:block;color:var(--muted);font-size:10px;font-weight:500;margin-top:2px;letter-spacing:.2px}
+.side-label{font-size:10px;color:#a1a5b2;font-weight:800;letter-spacing:1px;padding:0 11px;margin:0 0 9px}.nav{display:grid;gap:4px}.nav button{border:0;background:transparent;color:#686e7f;text-align:left;padding:11px 12px;border-radius:10px;display:flex;align-items:center;gap:11px;font-size:13px;transition:.15s}.nav button:hover{background:#f6f5ff;color:var(--purple)}.nav button.active{background:var(--purple2);color:var(--purple);font-weight:700}.nav .icon{width:19px;text-align:center;font-size:15px}.nav .count{margin-left:auto;color:#9a9eaa;font-size:11px}.sidebar-tip{margin-top:auto;background:#f7f6ff;border:1px solid #ebe8ff;border-radius:13px;padding:14px;color:#5e587f;font-size:11px;line-height:1.65}.sidebar-tip b{display:block;color:#443b86;font-size:12px;margin-bottom:5px}
+.main{padding:30px 42px 55px;min-width:0}.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:31px}.crumb{font-size:12px;color:var(--muted)}.crumb b{color:var(--ink)}.top-actions{display:flex;align-items:center;gap:11px}.avatar{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#e5e1ff;color:#5545cb;font-weight:800}
+h1{margin:0;font-size:27px;letter-spacing:-1px}.sub{color:var(--muted);margin:8px 0 0;font-size:13px}.heading-row{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;margin-bottom:23px}.primary{border:0;background:var(--purple);color:white;font-weight:700;border-radius:10px;padding:11px 16px;box-shadow:0 5px 13px #6857e82b;transition:.15s}.primary:hover{background:#5746d7;transform:translateY(-1px)}.primary span{font-size:17px;margin-right:5px}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:24px}.stat{background:white;border:1px solid var(--line);border-radius:13px;padding:17px 19px;display:flex;justify-content:space-between;align-items:center}.stat-label{font-size:11px;color:var(--muted);font-weight:600}.stat-value{font-size:24px;font-weight:800;margin-top:5px;letter-spacing:-1px}.stat-icon{width:38px;height:38px;border-radius:11px;background:#f2efff;display:grid;place-items:center;color:var(--purple);font-size:16px}.stat:nth-child(2) .stat-icon{background:#eaf7f1;color:var(--green)}.stat:nth-child(3) .stat-icon{background:#fff5e8;color:var(--amber)}
+.toolbar{display:flex;gap:10px;margin-bottom:15px}.search{position:relative;flex:1;max-width:420px}.search span{position:absolute;top:10px;left:13px;color:#9da2af}.search input{width:100%;border:1px solid var(--line);background:white;border-radius:10px;padding:10px 12px 10px 37px;outline:none}.search input:focus,.field input:focus,.field textarea:focus,.field select:focus{border-color:#a99eff;box-shadow:0 0 0 3px #6857e817}.sort{border:1px solid var(--line);background:#fff;color:#5f6575;border-radius:10px;padding:9px 12px}
+.filters{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 19px}.filter{background:white;border:1px solid var(--line);border-radius:999px;padding:7px 12px;color:#707687;font-size:11px;transition:.15s}.filter:hover{border-color:#c8c0ff}.filter.active{background:var(--purple2);border-color:#ded8ff;color:var(--purple);font-weight:700}
+.listhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.listhead b{font-size:13px}.listhead span{font-size:11px;color:var(--muted)}
+.cards{display:grid;gap:12px}.card{background:#fff;border:1px solid var(--line);border-radius:13px;padding:16px 18px;transition:.17s}.card:hover{box-shadow:var(--shadow);border-color:#dedaf7}.cardtop{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.cardtitle{display:flex;align-items:flex-start;gap:11px;min-width:0}.type-icon{flex:0 0 35px;height:35px;border-radius:10px;background:#f1efff;color:var(--purple);display:grid;place-items:center;font-weight:800;font-size:13px}.card:nth-child(3n+2) .type-icon{background:#eaf7f1;color:var(--green)}.card:nth-child(3n) .type-icon{background:#fff4e5;color:var(--amber)}.titletext{min-width:0}.titletext h3{font-size:14px;margin:1px 0 5px;letter-spacing:-.25px}.meta{display:flex;gap:7px;align-items:center;flex-wrap:wrap;color:#969baa;font-size:10px}.tag{background:#f3f4f7;padding:3px 7px;border-radius:5px;color:#757b8b}.tag.category{background:#f0edff;color:#6653d7}.status{font-size:10px;border-radius:99px;padding:4px 8px;background:#fff5e8;color:#b77820;white-space:nowrap}.status.done{background:#e8f6ef;color:#22815f}.card-actions{display:flex;gap:5px}.iconbtn{border:0;background:transparent;color:#a0a4af;border-radius:7px;padding:5px 7px}.iconbtn:hover{background:#f2f2f7;color:#53596b}.snippet{margin:14px 0 0;background:#f7f8fa;border-radius:8px;padding:10px 12px;color:#595f6f;font:11px/1.6 ui-monospace,SFMono-Regular,Consolas,monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.snippet .bad{color:#cb5454}.expand{margin-top:12px;border-top:1px solid #f0f1f4;padding-top:10px}.expand summary{list-style:none;cursor:pointer;color:#777d8d;font-size:11px}.expand summary::-webkit-details-marker{display:none}.expand summary:after{content:"⌄";float:right}.expand[open] summary:after{content:"⌃"}.details{padding-top:13px;display:grid;grid-template-columns:1fr 1fr;gap:10px}.detailbox{background:#fafbfc;border:1px solid #eef0f3;border-radius:9px;padding:11px}.detailbox h4{margin:0 0 7px;font-size:10px;color:#8b90a0}.detailbox p{margin:0;color:#555c6d;font-size:12px;line-height:1.65;white-space:pre-wrap}.codebox{white-space:pre-wrap!important;font:11px/1.6 ui-monospace,SFMono-Regular,Consolas,monospace!important}.codebox.badcode{color:#bd5555}.codebox.goodcode{color:#27825f}
+.empty{padding:48px 20px;text-align:center;background:white;border:1px dashed #dfe1e9;border-radius:13px;color:var(--muted)}.empty strong{display:block;color:#4b5060;margin:10px 0 5px}.empty .big{font-size:27px}
+.modal-backdrop{position:fixed;inset:0;background:#17182a73;display:none;align-items:center;justify-content:center;padding:18px;z-index:10}.modal-backdrop.show{display:flex}.modal{background:white;width:min(620px,100%);max-height:92vh;overflow:auto;border-radius:16px;box-shadow:0 20px 70px #17182a33}.modalhead{padding:21px 23px 15px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}.modalhead h2{font-size:17px;margin:0}.close{border:0;background:#f3f4f7;width:30px;height:30px;border-radius:8px;font-size:18px;color:#737989}.form{padding:20px 23px 23px;display:grid;grid-template-columns:1fr 1fr;gap:13px}.field{display:grid;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:11px;font-weight:700;color:#555b6b}.field input,.field select,.field textarea{width:100%;border:1px solid var(--line);border-radius:8px;padding:9px 10px;outline:none;background:#fff;color:var(--ink);font-size:12px}.field textarea{min-height:76px;resize:vertical;line-height:1.5}.field textarea.code{font:11px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;min-height:65px}.formfoot{grid-column:1/-1;display:flex;justify-content:flex-end;gap:8px;margin-top:3px}.secondary{border:1px solid var(--line);background:white;padding:9px 14px;border-radius:9px;color:#626879}.toast{position:fixed;bottom:22px;left:50%;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#25283a;color:white;padding:11px 16px;border-radius:10px;font-size:12px;transition:.2s;z-index:20}.toast.show{opacity:1;transform:translate(-50%,0)}
+
+.insights{background:#fff;border:1px solid var(--line);border-radius:14px;padding:19px;margin:0 0 25px;box-shadow:0 5px 18px rgba(38,42,64,.025)}
+.insight-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:15px}
+.insight-head h2{font-size:15px;margin:0;letter-spacing:-.3px}
+.insight-head p{font-size:11px;color:var(--muted);margin:5px 0 0}
+.demo-note{font-size:10px;color:#8b819e;background:#f7f5ff;border-radius:99px;padding:6px 9px;white-space:nowrap}
+.insight-grid{display:grid;grid-template-columns:1.05fr 1.2fr 1.1fr;gap:12px}
+.focus-panel,.distribution-panel,.repeat-panel{border:1px solid #eeeff4;background:#fcfcfe;border-radius:11px;padding:14px;min-width:0}
+.panel-kicker{font-size:10px;color:#9297a5;font-weight:700;letter-spacing:.2px}
+.focus-title{font-size:17px;font-weight:800;letter-spacing:-.5px;margin:8px 0 5px}
+.focus-count{font-size:11px;color:#726a9f}
+.focus-tip{font-size:11px;color:#666c7b;line-height:1.6;margin:10px 0 0}
+.focus-link{border:0;background:#eeeaff;color:#6250d2;border-radius:7px;padding:7px 9px;font-size:10px;font-weight:700;margin-top:11px}
+.barrow{display:grid;grid-template-columns:79px 1fr 24px;align-items:center;gap:8px;margin-top:12px}
+.barlabel{font-size:10px;color:#686e7d;white-space:nowrap}
+.bartrack{height:7px;background:#eeeff4;border-radius:99px;overflow:hidden}
+.barfill{height:100%;background:linear-gradient(90deg,#8e80f1,#6857e8);border-radius:99px;transition:width .3s}
+.barvalue{font-size:10px;color:#74798a;text-align:right}
+.repeat-list{display:grid;gap:8px;margin-top:10px}
+.repeat-item{display:flex;justify-content:space-between;align-items:center;gap:7px;padding:8px 9px;background:white;border:1px solid #f0f0f4;border-radius:8px;cursor:pointer}
+.repeat-item:hover{border-color:#cec7ff;background:#faf9ff}
+.repeat-name{font-size:10px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.repeat-meta{font-size:9px;color:#858a98;margin-top:3px}
+.repeat-count{flex:0 0 auto;color:#6755dc;background:#f0edff;padding:4px 6px;border-radius:6px;font-size:10px;font-weight:800}
+.repeat-empty{font-size:10px;color:#8b90a0;line-height:1.6;margin-top:10px}
+.hit-pill{background:#fff4e5;color:#a96a17;border-radius:5px;padding:3px 7px;font-size:10px;font-weight:700}
+.repeat-btn{border:1px solid #e7e3ff;background:#fff;color:#6857d8;border-radius:7px;padding:5px 8px;font-size:10px;font-weight:700;white-space:nowrap}
+.repeat-btn:hover{background:#f3f0ff}
+@media(max-width:1000px){.insight-grid{grid-template-columns:1fr 1fr}.repeat-panel{grid-column:1/-1}}
+@media(max-width:650px){.insight-grid{grid-template-columns:1fr}.repeat-panel{grid-column:auto}.insights{padding:14px}.insight-head{display:block}.demo-note{display:inline-block;margin-top:8px}.barrow{grid-template-columns:80px 1fr 26px}}
+
+
+.status-filter-row{display:flex;align-items:center;gap:11px;flex-wrap:wrap;margin:-7px 0 19px}
+.status-filter-label{font-size:11px;color:#73798a;font-weight:700}
+.status-filters{display:flex;gap:7px;flex-wrap:wrap}
+.status-filter{background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 11px;color:#707687;font-size:11px}
+.status-filter:hover{border-color:#c8c0ff}
+.status-filter.active{background:var(--purple2);border-color:#ded8ff;color:var(--purple);font-weight:700}
+.status-filter[data-status-filter="해결 중"].active{background:#fff5e8;border-color:#f4dfbd;color:#ad741f}
+.status-filter[data-status-filter="해결 완료"].active{background:#e8f6ef;border-color:#c9ead9;color:#22815f}
+.status-filter b{font-size:10px;margin-left:4px;opacity:.75}
+
+@media(max-width:850px){.app{grid-template-columns:210px 1fr}.main{padding:25px 24px}.stats{gap:9px}.stat{padding:14px}}
+@media(max-width:650px){.app{display:block}.sidebar{padding:13px 14px;border-right:0;border-bottom:1px solid var(--line);gap:12px}.brand{padding:0 4px}.side-label,.sidebar-tip{display:none}.nav{display:flex;overflow:auto;gap:5px}.nav button{white-space:nowrap;padding:8px 10px;font-size:11px}.nav .count{display:none}.main{padding:22px 15px 40px}.topbar{margin-bottom:22px}.heading-row{align-items:flex-start;flex-direction:column}.heading-row .primary{align-self:stretch}.stats{grid-template-columns:repeat(3,1fr);gap:7px}.stat{padding:11px 9px;display:block}.stat-label{font-size:9px}.stat-value{font-size:20px}.stat-icon{display:none}.toolbar{flex-direction:column}.search{max-width:none}.sort{align-self:flex-end}.details{grid-template-columns:1fr}.card{padding:14px}.form{grid-template-columns:1fr}.field.full,.formfoot{grid-column:1}.form{padding:17px}.modalhead{padding:17px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="brandmark">{ }</div><div class="brandname">오류노트<small>MY CODE, MY GROWTH</small></div></div>
+    <div>
+      <p class="side-label">내 노트</p>
+      <nav class="nav" id="nav">
+        <button class="active" data-filter="전체"><span class="icon">▦</span>전체 기록<span class="count" id="nav-all">0</span></button>
+        <button data-filter="함수·메서드"><span class="icon">ƒ</span>함수·메서드 오류<span class="count" id="nav-fn">0</span></button>
+        <button data-filter="문법·구문"><span class="icon">⌘</span>문법·구문 오류<span class="count" id="nav-syntax">0</span></button>
+        <button data-filter="변수·자료형"><span class="icon">◇</span>변수·자료형 오류<span class="count" id="nav-var">0</span></button>
+        <button data-filter="조건·반복"><span class="icon">↻</span>조건·반복 오류<span class="count" id="nav-logic">0</span></button>
+      </nav>
+    </div>
+    <div class="sidebar-tip"><b>오늘의 작은 팁</b>오류 메시지는 당황스러운 문장이 아니라, 코드가 보내는 힌트예요. 원인과 해결 과정을 함께 적어두면 다음엔 더 빨리 해결할 수 있어요.</div>
+  </aside>
+  <main class="main">
+    <div class="topbar"><div class="crumb">내 작업 공간 <span> / </span> <b id="crumb">전체 기록</b></div><div class="top-actions"><span class="crumb">나의 코딩 노트</span><div class="avatar">나</div></div></div>
+    <div class="heading-row">
+      <div><h1 id="page-title">오류 기록</h1><p class="sub">실수는 기록하고, 다음 코드에서는 한 단계 성장해요.</p></div>
+      <button class="primary" id="addBtn"><span>＋</span>오류 기록 추가</button>
+    </div>
+    <section class="stats">
+      <div class="stat"><div><div class="stat-label">누적 실수 횟수</div><div class="stat-value" id="stat-total">0</div></div><div class="stat-icon">▤</div></div>
+      <div class="stat"><div><div class="stat-label">해결한 오류 노트</div><div class="stat-value" id="stat-done">0</div></div><div class="stat-icon">✓</div></div>
+      <div class="stat"><div><div class="stat-label">반복 중인 오류 노트</div><div class="stat-value" id="stat-week">0</div></div><div class="stat-icon">↗</div></div>
+    </section>
+    <section class="insights">
+      <div class="insight-head">
+        <div><h2>내 실수 패턴 한눈에 보기</h2><p>반복된 오류를 살펴보고, 다음에 공부할 주제를 찾아봐요.</p></div>
+        <span class="demo-note">예시 기록이 포함되어 있어요 · 직접 수정/삭제 가능</span>
+      </div>
+      <div class="insight-grid">
+        <div class="focus-panel" id="focus-panel"></div>
+        <div class="distribution-panel"><div class="panel-kicker">유형별 반복 횟수</div><div id="distribution"></div></div>
+        <div class="repeat-panel"><div class="panel-kicker">다시 만난 오류</div><div id="repeat-list"></div></div>
+      </div>
+    </section>
+    <div class="toolbar">
+      <label class="search"><span>⌕</span><input id="search" type="search" placeholder="오류명, 원인, 해결 방법 검색"></label>
+      <select class="sort" id="sort"><option value="hits">많이 틀린 순</option><option value="new">최근 추가순</option><option value="old">오래된 순</option><option value="title">이름순</option></select>
+    </div>
+    <div class="filters" id="filters">
+      <button class="filter active" data-filter="전체">전체</button>
+      <button class="filter" data-filter="함수·메서드">함수·메서드</button>
+      <button class="filter" data-filter="문법·구문">문법·구문</button>
+      <button class="filter" data-filter="변수·자료형">변수·자료형</button>
+      <button class="filter" data-filter="조건·반복">조건·반복</button>
+    </div>
+    <div class="status-filter-row">
+      <span class="status-filter-label">진행 상태</span>
+      <div class="status-filters" id="status-filters">
+        <button class="status-filter active" data-status-filter="전체">전체 <b id="status-count-all">0</b></button>
+        <button class="status-filter" data-status-filter="해결 중">해결 중 <b id="status-count-pending">0</b></button>
+        <button class="status-filter" data-status-filter="해결 완료">해결 완료 <b id="status-count-done">0</b></button>
+      </div>
+    </div>
+    <div class="listhead"><b id="list-title">오류 노트</b><span id="result-count"></span></div>
+    <section class="cards" id="cards"></section>
+  </main>
+</div>
+<div class="modal-backdrop" id="backdrop">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modalhead"><h2 id="modal-title">새 오류 기록</h2><button class="close" id="closeBtn" aria-label="닫기">×</button></div>
+    <form class="form" id="entryForm">
+      <input type="hidden" id="entry-id">
+      <div class="field"><label for="title">오류 제목 *</label><input id="title" required maxlength="80" placeholder="예: map is not a function"></div>
+      <div class="field"><label for="language">프로그래밍 언어</label><select id="language"><option selected>Java</option><option>JavaScript</option><option>Python</option><option>C</option><option>C++</option><option>HTML/CSS</option><option>기타</option></select></div>
+      <div class="field"><label for="category">오류 유형 *</label><select id="category" required><option>함수·메서드</option><option>문법·구문</option><option>변수·자료형</option><option>조건·반복</option></select></div>
+      <div class="field"><label for="message">오류 메시지</label><input id="message" placeholder="콘솔에 표시된 오류 메시지"></div>
+      <div class="field full"><label for="wrong">잘못된 코드</label><textarea class="code" id="wrong" placeholder="오류가 발생한 코드를 적어보세요"></textarea></div>
+      <div class="field full"><label for="correct">수정한 코드</label><textarea class="code" id="correct" placeholder="수정한 코드를 적어보세요"></textarea></div>
+      <div class="field full"><label for="cause">원인과 해결 방법</label><textarea id="cause" placeholder="왜 오류가 났고, 어떻게 해결했나요?"></textarea></div>
+      <div class="field"><label for="status">진행 상태</label><select id="status"><option value="false">해결 중</option><option value="true">해결 완료</option></select></div>
+      <div class="formfoot"><button class="secondary" type="button" id="cancelBtn">취소</button><button class="primary" type="submit">저장하기</button></div>
+    </form>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const KEY="orionote_entries_v4";
+const LEGACY_KEY="orionote_entries_v3";
+const initial=[
+{id:"demo1",title:"더하기 메서드가 빼기를 해요",language:"Java",category:"함수·메서드",hits:5,message:"add(1, 1)의 결과가 2가 아니라 0이에요",wrong:"static int add(int a, int b) {\n    return a - b;\n}",correct:"static int add(int a, int b) {\n    return a + b;\n}",cause:"더하기 메서드인데 -를 써서 뺄셈을 하고 있었어요. -를 +로 바꾸면 add(1, 1)의 결과가 2가 돼요.",done:true,created:Date.now()-86400000*2},
+{id:"demo2",title:"Hello World 문장 괄호를 안 닫았어요",language:"Java",category:"문법·구문",hits:3,message:"컴파일 오류: ')'가 필요해요",wrong:"System.out.println(\"Hello, world!\";",correct:"System.out.println(\"Hello, world!\");",cause:"println 뒤에 여는 괄호는 있는데 닫는 괄호 )가 빠졌어요. 괄호를 닫고 세미콜론도 붙였어요.",done:true,created:Date.now()-86400000*4},
+{id:"demo3",title:"변수 이름을 잘못 썼어요",language:"Java",category:"변수·자료형",hits:2,message:"컴파일 오류: nam이라는 변수를 찾을 수 없어요",wrong:"String name = \"민수\";\nSystem.out.println(nam);",correct:"String name = \"민수\";\nSystem.out.println(name);",cause:"변수 이름은 name인데 출력할 때 nam이라고 적었어요. 변수 이름을 똑같이 맞췄어요.",done:false,created:Date.now()-86400000*6},
+{id:"demo4",title:"if 조건에 =를 썼어요",language:"Java",category:"조건·반복",hits:1,message:"컴파일 오류: if 조건은 참/거짓이어야 해요",wrong:"int age = 20;\nif (age = 20) {\n    System.out.println(\"성인\");\n}",correct:"int age = 20;\nif (age == 20) {\n    System.out.println(\"성인\");\n}",cause:"=는 값을 넣을 때 쓰고, 같은지 비교할 때는 ==를 써요. if 조건을 age == 20으로 바꿨어요.",done:false,created:Date.now()-86400000*8}
+];
+let entries;
+try{
+ entries=JSON.parse(localStorage.getItem(KEY));
+ if(!Array.isArray(entries)){
+   const legacy=JSON.parse(localStorage.getItem(LEGACY_KEY));
+   entries=Array.isArray(legacy)?legacy:initial;
+ }
+}catch(e){entries=initial}
+entries=entries.map(e=>({...e,hits:Math.max(1,Number(e.hits)||1)}));
+const demoRows=Object.fromEntries(initial.map(e=>[e.id,e]));
+entries=entries.map(e=>e.id&&demoRows[e.id]?{...demoRows[e.id],hits:Number(e.hits)||demoRows[e.id].hits}:e);
+function save(){
+ try{localStorage.setItem(KEY,JSON.stringify(entries))}
+ catch(e){console.warn("브라우저 저장은 제한됐지만 현재 화면에서는 계속 사용할 수 있어요.",e)}
+}
+save();
+let activeFilter="전체";
+let activeStatus="전체";
+const categoryIcons={"함수·메서드":"ƒ","문법·구문":"⌘","변수·자료형":"◇","조건·반복":"↻"};
+const categoryLabels={"전체":"전체 기록","함수·메서드":"함수·메서드 오류","문법·구문":"문법·구문 오류","변수·자료형":"변수·자료형 오류","조건·반복":"조건·반복 오류"};
+function esc(s=""){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function dateText(ts){return new Date(ts).toLocaleDateString("ko-KR",{year:"numeric",month:"short",day:"numeric"})}
+const studyTips={
+ "함수·메서드":"함수의 매개변수와 반환값, 메서드가 기대하는 자료형을 복습해보세요.",
+ "문법·구문":"괄호 짝, 들여쓰기, 콜론·세미콜론 등 기본 문법을 작은 예제로 확인해보세요.",
+ "변수·자료형":"변수의 선언 시점과 값의 자료형, 값이 비어 있을 때의 처리를 살펴보세요.",
+ "조건·반복":"조건식의 참·거짓과 반복 범위의 시작·끝 값을 표로 따라가며 확인해보세요."
+};
+function renderInsights(){
+ const cats=["함수·메서드","문법·구문","변수·자료형","조건·반복"];
+ const totals=Object.fromEntries(cats.map(c=>[c,entries.filter(e=>e.category===c).reduce((s,e)=>s+(Number(e.hits)||1),0)]));
+ const top=cats.slice().sort((a,b)=>totals[b]-totals[a])[0];
+ const all=Object.values(totals).reduce((a,b)=>a+b,0);
+ const focus=document.getElementById("focus-panel");
+ if(!entries.length){
+   focus.innerHTML='<div class="panel-kicker">이번 학습 포인트</div><div class="focus-title">첫 기록을 만들어봐요</div><p class="focus-tip">오류를 기록할수록 반복되는 패턴과 복습할 주제를 찾아드려요.</p>';
+ }else{
+   const pct=all?Math.round(totals[top]/all*100):0;
+   focus.innerHTML=`<div class="panel-kicker">이번 학습 포인트</div><div class="focus-title">${esc(top)} 오류</div><div class="focus-count">누적 ${totals[top]}회 · 전체 실수의 ${pct}%</div><p class="focus-tip">${studyTips[top]}</p><button class="focus-link" onclick="setFilter('${top}')">이 유형 기록 모아보기 →</button>`;
+ }
+ document.getElementById("distribution").innerHTML=cats.map(c=>{
+   const p=all?Math.round(totals[c]/all*100):0;
+   return `<div class="barrow"><span class="barlabel">${c}</span><div class="bartrack"><div class="barfill" style="width:${p}%"></div></div><span class="barvalue">${totals[c]}</span></div>`;
+ }).join("");
+ const recurring=entries.filter(e=>(Number(e.hits)||1)>1).slice().sort((a,b)=>(b.hits||1)-(a.hits||1)).slice(0,3);
+ document.getElementById("repeat-list").innerHTML=recurring.length
+   ? `<div class="repeat-list">${recurring.map(e=>`<div class="repeat-item" onclick="setFilter('${e.category}')"><div style="min-width:0"><div class="repeat-name">${esc(e.title)}</div><div class="repeat-meta">${esc(e.category)} · ${esc(e.language)}</div></div><span class="repeat-count">${e.hits}회</span></div>`).join("")}</div>`
+   : '<div class="repeat-empty">아직 반복 기록이 없어요. 같은 실수를 다시 만났다면 오류 카드에서 <b>또 실수했어요 +1</b>을 눌러보세요.</div>';
+}
+function setFilter(category){activeFilter=category;render();window.scrollTo({top:0,behavior:"smooth"})}
+function logAgain(id){
+ const e=entries.find(x=>x.id===id);
+ if(!e)return;
+ e.hits=(Number(e.hits)||1)+1;
+ e.lastRepeated=Date.now();
+ save();render();toast(`“${e.title}” 반복 횟수를 ${e.hits}회로 기록했어요.`);
+}
+
+function render(){
+ const q=document.getElementById("search").value.trim().toLowerCase();
+ let list=entries.filter(e=>(activeFilter==="전체"||e.category===activeFilter)&&(activeStatus==="전체"||(activeStatus==="해결 완료"?!!e.done:!e.done))&&(!q||[e.title,e.language,e.category,e.message,e.cause,e.wrong,e.correct].join(" ").toLowerCase().includes(q)));
+ const sort=document.getElementById("sort").value;
+ if(sort==="hits")list.sort((a,b)=>(Number(b.hits)||1)-(Number(a.hits)||1)||b.created-a.created);else if(sort==="old")list.sort((a,b)=>a.created-b.created);else if(sort==="title")list.sort((a,b)=>a.title.localeCompare(b.title,"ko"));else list.sort((a,b)=>b.created-a.created);
+ const totalHits=entries.reduce((sum,e)=>sum+(Number(e.hits)||1),0);
+ document.getElementById("stat-total").textContent=totalHits;
+ document.getElementById("stat-done").textContent=entries.filter(e=>e.done).length;
+ document.getElementById("stat-week").textContent=entries.filter(e=>(Number(e.hits)||1)>1).length;
+ renderInsights();
+ document.getElementById("nav-all").textContent=entries.length;
+ document.getElementById("nav-fn").textContent=entries.filter(e=>e.category==="함수·메서드").length;
+ document.getElementById("nav-syntax").textContent=entries.filter(e=>e.category==="문법·구문").length;
+ document.getElementById("nav-var").textContent=entries.filter(e=>e.category==="변수·자료형").length;
+ document.getElementById("nav-logic").textContent=entries.filter(e=>e.category==="조건·반복").length;
+ document.getElementById("status-count-all").textContent=entries.length;
+ document.getElementById("status-count-pending").textContent=entries.filter(e=>!e.done).length;
+ document.getElementById("status-count-done").textContent=entries.filter(e=>!!e.done).length;
+ document.getElementById("crumb").textContent=categoryLabels[activeFilter];
+ document.getElementById("page-title").textContent=activeFilter==="전체"?"오류 기록":categoryLabels[activeFilter];
+ const categoryTitle=activeFilter==="전체"?"오류 노트":categoryLabels[activeFilter];
+ document.getElementById("list-title").textContent=activeStatus==="전체"?categoryTitle:`${categoryTitle} · ${activeStatus}`;
+ document.getElementById("result-count").textContent=`${list.length}개 기록`;
+ document.querySelectorAll("[data-filter]").forEach(b=>b.classList.toggle("active",b.dataset.filter===activeFilter));
+ document.querySelectorAll("[data-status-filter]").forEach(b=>b.classList.toggle("active",b.dataset.statusFilter===activeStatus));
+ const cards=document.getElementById("cards");
+ if(!list.length){cards.innerHTML=`<div class="empty"><div class="big">⌕</div><strong>${q?"검색 결과가 없어요":"아직 기록이 없어요"}</strong><span>${q?"다른 키워드로 검색해보세요.":"오류 기록 추가 버튼으로 첫 노트를 만들어보세요."}</span></div>`;return}
+ cards.innerHTML=list.map(e=>`<article class="card">
+   <div class="cardtop"><div class="cardtitle"><div class="type-icon">${categoryIcons[e.category]||"•"}</div><div class="titletext"><h3>${esc(e.title)}</h3><div class="meta"><span class="tag category">${esc(e.category)}</span><span class="tag">${esc(e.language)}</span><span>${dateText(e.created)}</span><span class="hit-pill">↻ ${Number(e.hits)||1}회</span></div></div></div>
+   <div style="display:flex;align-items:center;gap:7px"><span class="status ${e.done?"done":""}">${e.done?"해결 완료":"해결 중"}</span><div class="card-actions"><button class="repeat-btn" title="기록 횟수 추가" onclick="logAgain('${e.id}')">또 실수했어요 +1</button><button class="iconbtn" title="수정" onclick="editEntry('${e.id}')">✎</button><button class="iconbtn" title="삭제" onclick="deleteEntry('${e.id}')">⌫</button></div></div></div>
+   ${e.message?`<div class="snippet"><span class="bad">${esc(e.message)}</span></div>`:""}
+   <details class="expand"><summary>잘못된 코드와 해결 방법 보기</summary>
+     <div class="details">
+       <div class="detailbox"><h4>잘못된 코드</h4><p class="codebox badcode">${esc(e.wrong||"기록 없음")}</p></div>
+       <div class="detailbox"><h4>수정한 코드</h4><p class="codebox goodcode">${esc(e.correct||"기록 없음")}</p></div>
+       <div class="detailbox" style="grid-column:1/-1"><h4>원인과 해결 방법</h4><p>${esc(e.cause||"기록 없음")}</p></div>
+       <div style="grid-column:1/-1;text-align:right"><button class="secondary" style="font-size:10px;padding:6px 10px" onclick="toggleDone('${e.id}')">${e.done?"해결 중으로 변경":"해결 완료로 표시"}</button></div>
+     </div>
+   </details>
+ </article>`).join("");
+}
+function openModal(entry){
+ document.getElementById("entryForm").reset();
+ document.getElementById("entry-id").value=entry?.id||"";
+ document.getElementById("modal-title").textContent=entry?"오류 기록 수정":"새 오류 기록";
+ if(entry){for(const k of ["title","language","category","message","wrong","correct","cause"])document.getElementById(k).value=entry[k]||"";document.getElementById("status").value=String(!!entry.done)}
+ document.getElementById("backdrop").classList.add("show");setTimeout(()=>document.getElementById("title").focus(),80)
+}
+function closeModal(){document.getElementById("backdrop").classList.remove("show")}
+function editEntry(id){const e=entries.find(x=>x.id===id);if(e)openModal(e)}
+function deleteEntry(id){const e=entries.find(x=>x.id===id);if(!e)return;if(confirm(`“${e.title}” 기록을 삭제할까요?`)){entries=entries.filter(x=>x.id!==id);save();render();toast("기록을 삭제했어요.")}}
+function toggleDone(id){const e=entries.find(x=>x.id===id);if(e){e.done=!e.done;save();render();toast(e.done?"해결 완료로 표시했어요.":"해결 중으로 변경했어요.")}}
+function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2200)}
+document.getElementById("addBtn").onclick=()=>openModal();
+document.getElementById("closeBtn").onclick=closeModal;
+document.getElementById("cancelBtn").onclick=closeModal;
+document.getElementById("backdrop").addEventListener("click",e=>{if(e.target.id==="backdrop")closeModal()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+document.getElementById("search").addEventListener("input",render);
+document.getElementById("sort").addEventListener("change",render);
+document.querySelectorAll("[data-filter]").forEach(b=>b.addEventListener("click",()=>{activeFilter=b.dataset.filter;render()}));
+document.querySelectorAll("[data-status-filter]").forEach(b=>b.addEventListener("click",()=>{activeStatus=b.dataset.statusFilter;render()}));
+document.getElementById("entryForm").addEventListener("submit",e=>{
+ e.preventDefault();
+ const id=document.getElementById("entry-id").value;
+ const item={id:id||("note"+Date.now()),title:document.getElementById("title").value.trim(),language:document.getElementById("language").value,category:document.getElementById("category").value,message:document.getElementById("message").value.trim(),wrong:document.getElementById("wrong").value.trim(),correct:document.getElementById("correct").value.trim(),cause:document.getElementById("cause").value.trim(),done:document.getElementById("status").value==="true",hits:id?(entries.find(x=>x.id===id)?.hits||1):1,created:Date.now()};
+ if(id){const idx=entries.findIndex(x=>x.id===id);if(idx>=0)item.created=entries[idx].created;entries=entries.map(x=>x.id===id?item:x)}else entries.unshift(item);
+ save();closeModal();activeFilter="전체";activeStatus="전체";render();toast(id?"기록을 수정했어요.":"새 오류를 기록했어요.")
+});
+render();
+</script>
+</body>
+</html>
